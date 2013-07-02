@@ -2,6 +2,7 @@ import functools
 import os
 import random
 import time
+import ast
 from piui import PiUi
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -63,6 +64,12 @@ class DemoPiUi(object):
         con = self.ui.console(title="Console", prev_text="Back", onprevclick=self.main_menu)
         con.print_line("Hello Console!")
 
+    def page_location(self):
+        self.page = self.ui.new_ui_page(title="Location", prev_text="Back", onprevclick=self.main_menu)
+        loc_str = self.ui.get_location()
+        loc = ast.literal_eval(loc_str)
+        self.page.add_textbox("Your location is: "+str(loc))
+
     def main_menu(self):
         self.page = self.ui.new_ui_page(title="PiUi")
         self.list = self.page.add_list()
@@ -72,6 +79,7 @@ class DemoPiUi(object):
         self.list.add_item("Images", chevron=True, onclick=self.page_images)
         self.list.add_item("Toggles", chevron=True, onclick=self.page_toggles)
         self.list.add_item("Console!", chevron=True, onclick=self.page_console)
+	self.list.add_item("Location", chevron=True, onclick=self.page_location)
         self.ui.done()
 
 
@@ -109,3 +117,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -98,6 +98,17 @@ function poll() {
            $('#' + msg.eid).click(function(o) {
               $.get('/click?eid=' + $(this).attr('id'), {}, function (r) {});
             });
+         } else if (msg.cmd === "geolocation") {
+            navigator.geolocation.getCurrentPosition(
+                function(location) {
+                    //console.log("lat ="+location.coords.latitude);
+                    //console.log("long="+location.coords.longitude);
+                    //console.log("acc ="+location.coords.accuracy);
+                    return_string = "{'lat': "+location.coords.latitude+", 'long': "+location.coords.longitude+", 'acc': "+location.coords.accuracy + " }";
+                    console.log("return_string = "+return_string);
+                    $.get('/state?msg='+return_string, {}, function (r) {});
+                });
+                //, { enableHighAccuracy:true });
          }
        }
        setTimeout(function() {poll()}, 0);
